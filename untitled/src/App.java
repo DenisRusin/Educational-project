@@ -1,52 +1,121 @@
-import java.util.Random;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
+    protected static ArrayList<Person> persons = new ArrayList<>();
+    protected static ArrayList<Product> products = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите покупателей:");
+        addPerson(scanner.nextLine());
 
-        System.out.println("Сколько обьектов ТВ вы хотите создать?");
+        System.out.println("Введите продукты:");
+        addProduct(scanner.nextLine());
 
-        int countTv = scanner.nextInt();
-        scanner.nextLine();
-        TV[] tv = new TV[countTv]; // создали массив обьектов TV
+        while (true) {
+            System.out.println("Введите покупку (Выход - END)");
 
-        for (int i = 0; i < tv.length;  i++) {
-            System.out.println("Задайте параметры для TV №" + (i+1));
-            System.out.println("Введите название модели:");
-            String model = scanner.nextLine();
-            System.out.println("Введите название фирмы:");
-            String company = scanner.nextLine();;
-            System.out.println("Введите размер диагонали экрана:");
-            double screenDiagonal = scanner.nextDouble();
-            System.out.println("Введите вес:");
-            double weight = scanner.nextDouble();;
-            System.out.println("Введите цену:");
-            double price = scanner.nextDouble();
-            scanner.nextLine();
+            String text = scanner.nextLine();
 
-            tv[i] = new TV(model, company, screenDiagonal, weight, price); // создаем обькт TV и задаем параметры через конструктор
+            if (text.equals("END")) {
+                getShoppingList(); // Вывод списка покупок
+                System.out.println("Выход");
+                break; // выход
+            }
+            buyProduct(text); // покупаем продукт
+        }
+    }
+
+
+    protected static void addPerson(String text) { // добавление покупателя
+        String[] person = text.split(";"); // создаем массив строк
+
+        for (String p : person) { // проходимся по каждому эллимету коллекции
+            String[] per = p.split("="); // помещаем в массив 2 эллемента 1 Имя 2 Деньги
+
+            if (per[0].trim().isBlank()) { // проверка на пустое имя
+                System.out.println("Имя не может быть пустым");
+                break;
+            } else if (per[0].trim().length() < 3) {// проверка на длинну имени
+                System.out.println("Имя не может быть короче 3 символов");
+                break;
+            } else if (Double.parseDouble(per[1]) < 0) { // проверка на отрецательное колличество денег
+                System.out.println("Деньги не могут быть отрицательными");
+                break;
+            }
+            persons.add(new Person(per[0].trim(), Double.parseDouble(per[1]))); // создаем обьект Person и помещаем в List
+        }
+    }
+
+
+    protected static void addProduct(String text) { // Добавление продукта
+        String[] product = text.split(";"); // делим строку и помещаем в массив
+
+        for (String p : product) { // проходимся по каждому эллементу
+            String[] prod = p.split("="); // 2 элимента, 1 Имя 2 Цена
+
+            if (prod[0].trim().isBlank()) { // проверка на пустое имя
+                System.out.println("Название продукта не может быть пустым");
+                break;
+            }  else if (Double.parseDouble(prod[1]) < 0) { // проверка на отрецательную цену
+                System.out.println("Стоимость продукта не может быть отрицательной");
+                break;
+            }
+
+            products.add(new Product(prod[0].trim(), Double.parseDouble(prod[1]))); // создаем обьект Person и помещаем в List
+        }
+    }
+
+
+    protected static void buyProduct(String text) { // добавление продукта в корзину
+        String[] personProduct = text.split("-");
+        Person pers = null;
+        Product prod = null;
+
+        for (Person p : persons) { // проверяем есть ли в системе Покупатель
+            if (p.getName().equals(personProduct[0].trim())) {
+                pers = p;
+                break;
+            }
         }
 
-        for (TV value : tv) {
-            System.out.println("Характеристики " + value); // Просматриваем все характеристики и включаем ТВ
-            value.turnOnOffTheTV();
+        for (Product p : products) { // проверяем есть ли в системе Продукт
+            if (p.getName().equals(personProduct[1].trim())) {
+                prod = p;
+            }
         }
 
-        for (TV value : tv) { // Меняем цену телевизоров
-            System.out.println("Меняем цену телевизора " + value.getCompany() + " " + value.getModel());
-            value.setPrice(new Random().nextDouble(50000.00));
-            System.out.println("Новая цена телевизора " + value.getCompany() + " "  + value.getModel() + " " + value.getPrice());
+        if (pers == null) {
+            System.out.println("Пользователя с именем " + personProduct[0].trim() + " нет в системе");
+            return;
         }
-
-
-
-        for (TV value : tv) {  // Просматриваем все характеристики и выключаем ТВ
-            System.out.println("Новые характеристики телевизора " + value);
-            value.turnOnOffTheTV();
+        if (prod == null) {
+            System.out.println("Продукта " + personProduct[1].trim() + " нет в системе");
+            return;
+        }  // Если есть пользователь и есть продукт, то происходит добавление
+        if (pers.getAmount() >= prod.getPrice()) { // хватает ли денег на продукт?
+            pers.setProductPackage(prod); //Добавляем продукт в пакет
+            pers.setAmount(pers.getAmount() - prod.getPrice()); // минусуем стоимость продукта
+            System.out.println(pers.getName() + " купил(а) " + prod.getName());
+        } else {
+            System.out.println(pers.getName() + " не может позволить себе " + prod.getName());
         }
+    }
 
+
+    protected static void getShoppingList() { // вывод списка продуктов для каждого покупателя
+        for (Person p : persons) {
+            if (p.getProductPackage().isEmpty()) {
+                System.out.println(p.getName() + " - Ничего не куплено");
+            } else {
+                String list = String.valueOf(p.getProductPackage());
+                System.out.println(p.getName() + " - " + list.substring(1,list.length()-1));
+            }
+        }
     }
 }
+
+
