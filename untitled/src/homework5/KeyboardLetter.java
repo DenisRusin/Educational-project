@@ -1,3 +1,5 @@
+package homework5;
+
 public class KeyboardLetter {
 
     static String keyboard = "qwertyuiopasdfghjklzxcvbnm";

@@ -1,3 +1,5 @@
+package homework5;
+
 public class Arrow {
 
     public int getCountArrow(String text) {

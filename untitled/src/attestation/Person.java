@@ -1,3 +1,5 @@
+package attestation;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "attestation.Person{" +
                 "name='" + name + '\'' +
                 ", amount=" + amount +
                 ", productPackage=" + productPackage +

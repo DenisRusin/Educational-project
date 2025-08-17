@@ -1,3 +1,5 @@
+package attestation;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -46,7 +48,7 @@ public class App {
                 System.out.println("Деньги не могут быть отрицательными");
                 break;
             }
-            persons.add(new Person(per[0].trim(), Double.parseDouble(per[1]))); // создаем обьект Person и помещаем в List
+            persons.add(new Person(per[0].trim(), Double.parseDouble(per[1]))); // создаем обьект attestation.Person и помещаем в List
         }
     }
 
@@ -65,7 +67,7 @@ public class App {
                 break;
             }
 
-            products.add(new Product(prod[0].trim(), Double.parseDouble(prod[1]))); // создаем обьект Person и помещаем в List
+            products.add(new Product(prod[0].trim(), Double.parseDouble(prod[1]))); // создаем обьект attestation.Person и помещаем в List
         }
     }
 

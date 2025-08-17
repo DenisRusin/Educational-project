@@ -1,3 +1,5 @@
+package homework4;
+
 public class TV {
 
     private String model;
@@ -67,7 +69,7 @@ public class TV {
 
     @Override
     public String toString() {
-        return "TV{" +
+        return "homework4.TV{" +
                 "company='" + company + '\'' +
                 ", model='" + model + '\'' +
                 ", screenDiagonal=" + screenDiagonal +

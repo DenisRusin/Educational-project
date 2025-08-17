@@ -1,7 +1,9 @@
+package homework4;
+
 import java.util.Random;
 import java.util.Scanner;
 
-public class App1 {
+public class App {
 
     public static void main(String[] args) {
 
@@ -11,10 +13,10 @@ public class App1 {
 
         int countTv = scanner.nextInt();
         scanner.nextLine();
-        TV[] tv = new TV[countTv]; // создали массив обьектов TV
+        TV[] tv = new TV[countTv]; // создали массив обьектов homework4.TV
 
         for (int i = 0; i < tv.length;  i++) {
-            System.out.println("Задайте параметры для TV №" + (i+1));
+            System.out.println("Задайте параметры для homework4.TV №" + (i+1));
             System.out.println("Введите название модели:");
             String model = scanner.nextLine();
             System.out.println("Введите название фирмы:");
@@ -27,7 +29,7 @@ public class App1 {
             double price = scanner.nextDouble();
             scanner.nextLine();
 
-            tv[i] = new TV(model, company, screenDiagonal, weight, price); // создаем обькт TV и задаем параметры через конструктор
+            tv[i] = new TV(model, company, screenDiagonal, weight, price); // создаем обькт homework4.TV и задаем параметры через конструктор
         }
 
         for (TV value : tv) {
