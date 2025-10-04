@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "6432:5432"
+    environment:
+      - POSTGRES_DB=ordersdb
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=12345
